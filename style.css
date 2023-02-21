@@ -1,0 +1,58 @@
+body{
+    background-image: url(./Weather\ Background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 30px;
+}
+#loading {
+    position: absolute;
+    left: 550px;
+    top: 200px;
+    backdrop-filter: blur(10px);
+}
+@media (max-width: 768px) {
+    #loading {
+        position: absolute;
+        left: 140px;
+        top: 300px;
+        z-index: 2;
+        backdrop-filter: blur(10px);
+    }
+    #loading img {
+        width: 100px;
+    }
+    input{
+        font-size: 10px;
+    }
+}
+.row .col-12 .row .temp {
+    padding-top: 30%;
+}
+input {
+    width: 300px;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 30px;
+    padding: 10px;
+    border-bottom: 5px solid #800000 !important;
+    background: none !important;
+}
+input::placeholder {
+    color: #fff;
+}
+.row .col-md-4 {
+    backdrop-filter: blur(6px);
+}
+.row .col-md-4 .row .location {
+    border-bottom: 5px solid #800000;
+}
+.row .col-md-4 .row .location .row .col-6 h5 {
+    margin-top: 20px;
+}
+.row .col-md-4 .row .pressure .row .col-6 h5 {
+    margin-top: 20px;
+}
+span {
+    font-size: 10px;
+}

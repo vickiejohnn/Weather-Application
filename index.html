@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    <title>Weather App</title>
+</head>
+<body onload="getCurrentLocation()">
+    <div id="loading"></div>
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="row">
+                <div class="col-12">
+                    <input type="text" id="locationInput" placeholder="Search Location" oninput="getCityDetails()">
+                </div>
+                <div class="col-12 text-light temp">
+                    <div id="displayTemp"></div>
+                    <div class="fs-3" id="showLocation"></div>
+                    <div id="showDescription"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">   
+            <div class="row p-5">
+                <h3 class="text-light">Weather Details</h3>
+                <div class="col-12 location">
+                    <div class="row">
+                        <div class="col-6 text-light my-5">
+                            <h5>Location</h5>
+                            <h5>Description</h5>
+                            <h5>Humidity</h5>
+                            <h5>Wind</h5>
+                        </div>
+                        <div class="col-6 text-light my-5">
+                            <h5 id="displayLocation"></h5>
+                            <h5 id="displayDescription"></h5>
+                            <h5 id="displayHumidity"></h5>
+                            <h5 id="displayWind"></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pressure">
+                    <div class="row">
+                        <div class="col-6 text-light my-5">
+                            <h5>Min</h5>
+                            <h5>Max</h5>
+                            <h5>Feels</h5>
+                            <h5>Pressure</h5>
+                        </div>
+                        <div class="col-6 text-light my-5">
+                            <h5 id="displayMin"></h5>
+                            <h5 id="displayMax"></h5>
+                            <h5 id="displayFeels"></h5>
+                            <h5 id="displayPressure"></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2"><span class="text-light">Designed by </span><span class="fw-bold text-warning">Aderibigbe Victor Toluwani</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let apiKey = 'bf2fc5388248f6e4827dd643c43faf58'
+        const getCityDetails = ()=> {
+            let cityName = locationInput.value
+            let endPoint = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
+            loading.innerHTML = '<img src="./Cube-1s-200px.gif" alt="">'
+            fetch(endPoint)
+            .then((response)=> response.json())
+            .then((convertedResponse)=> {
+                loading.innerHTML = ''
+                displayLocation.innerHTML = `${convertedResponse.name}, ${convertedResponse.sys.country}`
+                displayDescription.innerHTML = `${convertedResponse.weather[0].description}`
+                showLocation.innerHTML = `${convertedResponse.name}, ${convertedResponse.sys.country}`
+                showDescription.innerHTML = `${convertedResponse.weather[0].description}`
+                displayHumidity.innerHTML = `${convertedResponse.main.humidity}%`
+                displayWind.innerHTML = `${convertedResponse.wind.speed} m/s`
+                displayTemp.innerHTML = `<h1 style='font-size: 100px;'>${(convertedResponse.main.temp-273).toFixed(0)}℃</h1>`
+                displayMin.innerHTML = `${(convertedResponse.main.temp_min-273).toFixed(1)}℃`
+                displayMax.innerHTML = `${(convertedResponse.main.temp_max-273).toFixed(1)}℃`
+                displayFeels.innerHTML = `${(convertedResponse.main.feels_like-273).toFixed(1)}℃`
+                displayPressure.innerHTML = `${convertedResponse.main.pressure} hPa`
+            })
+        }
+        const getCurrentLocation = ()=> {
+            loading.innerHTML = '<img src="./Cube-1s-200px.gif" alt="">'
+            navigator.geolocation.getCurrentPosition((location)=> {
+                let latitude = location.coords.latitude
+                let longitude = location.coords.longitude
+                let endPoint3 = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+                fetch(endPoint3)
+                .then((response)=> response.json())
+                .then((convertedResponse)=> {
+                    loading.innerHTML = ''
+                    let data = convertedResponse
+                    displayLocation.innerHTML = `${data.name}, ${data.sys.country}`
+                    displayDescription.innerHTML = `${data.weather[0].description}`
+                    showLocation.innerHTML = `${data.name}, ${data.sys.country}`
+                    showDescription.innerHTML = `${data.weather[0].description}`
+                    displayHumidity.innerHTML = `${data.main.humidity}%`
+                    displayWind.innerHTML = `${data.wind.speed} m/s`
+                    displayTemp.innerHTML = `<h1 style='font-size: 100px;'>${(data.main.temp-273).toFixed(0)}℃</h1>`
+                    displayMin.innerHTML = `${(data.main.temp_min-273).toFixed(1)}℃`
+                    displayMax.innerHTML = `${(data.main.temp_max-273).toFixed(1)}℃`
+                    displayFeels.innerHTML = `${(data.main.feels_like-273).toFixed(1)}℃`
+                    displayPressure.innerHTML = `${data.main.pressure} hPa`
+                })
+            })
+        }
+    </script>
+</body>
+</html>
